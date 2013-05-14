@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    sprintly-cli (0.0.1)
+      require_all (~> 1.2.1)
+      thor
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    require_all (1.2.1)
+    thor (0.18.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  sprintly-cli!
