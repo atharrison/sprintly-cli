@@ -5,11 +5,20 @@ module SprintlyCli
   class Cli < Thor
     namespace :sprintlycli
 
-    desc "list", "List tasks"
+    desc "list", "List items"
     def list
 
-      sprintly = Sprintly.new
-      puts sprintly.list
+      puts "Listing items..."
+      sprintlyClient = SprintlyClient.new
+      puts sprintlyClient.list
+
+    end
+
+    desc "products", "List products"
+    def products
+      puts "Listing products..."
+      sprintlyClient = SprintlyClient.new
+      puts sprintlyClient.products
 
     end
   end
