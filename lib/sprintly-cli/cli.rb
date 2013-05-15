@@ -26,7 +26,7 @@ module SprintlyCli
 
     desc "config", "Configure sprintly-cli"
     def config
-      setup = SprintlyCli::Setup.new
+      setup = SprintlyCli::SprintlyHelper.new
       user_options = setup.first_run
       all_options = OPTIONS.merge(user_options)
 
@@ -37,7 +37,7 @@ module SprintlyCli
     desc "list", "List items"
     def list
 
-      sprintly_client = SprintlyClient.new(OPTIONS[:api_user],OPTIONS[:api_key])
+      sprintly_client = new_client
       product_id = OPTIONS[:product_id].to_i
       product = sprintly_client.product(product_id)
       items = sprintly_client.list(product_id)
@@ -48,11 +48,26 @@ module SprintlyCli
 
     desc "products", "List products"
     def products
-      sprintlyClient = SprintlyClient.new(OPTIONS[:api_user], OPTIONS[:api_key])
-      puts sprintlyClient.products
+      sprintly_client = new_client
+      puts sprintly_client.products
+    end
+
+    desc "create_item", "Create an item under the current Product"
+    def create_item
+      sprintly_client = new_client
+      product_id = OPTIONS[:product_id].to_i
+      product = sprintly_client.product(product_id)
+
+      helper = SprintlyCli::SprintlyHelper.new
+      new_item_params = helper.ask_for_new_item(product["name"])
+      sprintly_client.create_item(product_id, new_item_params)
     end
 
     private
+
+    def new_client
+      SprintlyClient.new(OPTIONS[:api_user], OPTIONS[:api_key])
+    end
 
     def format_items(items, header="Items:")
       items_str = [header]
