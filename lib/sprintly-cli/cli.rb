@@ -41,8 +41,12 @@ module SprintlyCli
       product_id = OPTIONS[:product_id].to_i
       product = sprintly_client.product(product_id)
       items = sprintly_client.list(product_id)
+      helper = SprintlyCli::SprintlyHelper.new
 
-      puts format_items(items, "[#{product["name"]}] Items:")
+      items = helper.format_items(items, "[#{product["name"]}] Items:")
+      items.each do |msg, color|
+        say msg, color
+      end
 
     end
 
@@ -123,19 +127,7 @@ module SprintlyCli
       SprintlyClient.new(OPTIONS[:api_user], OPTIONS[:api_key])
     end
 
-    def format_items(items, header="Items:")
-      items_str = [header]
-      items.each do |item|
-        items_str << "(#{item["score"]}) #{item["number"]}\t(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}\t- #{item["title"]}"
-      end
-      items_str.join("\n")
-    end
 
-    def name_from_first_last(first_last_hash, nilval="unknown")
-      return nilval if first_last_hash.nil?
-
-      "#{first_last_hash["first_name"]} #{first_last_hash["last_name"]}"
-    end
 
   end
 end

@@ -56,5 +56,37 @@ module SprintlyCli
 
       args
     end
+
+    def format_items(items, header="Items:")
+      items_array = []
+      items_array << [header, :green]
+      #items_str = [header]
+      items.each do |item|
+        color = color_by_status(item["status"])
+        items_array << ["(#{item["score"]}) #{item["number"]}\t(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}\t- #{item["title"]}", color]
+      end
+      items_array
+    end
+
+    def name_from_first_last(first_last_hash, nilval="unknown")
+      return nilval if first_last_hash.nil?
+
+      "#{first_last_hash["first_name"]} #{first_last_hash["last_name"]}"
+    end
+
+    def color_by_status(status)
+      case status
+        when "backlog"
+          :yellow
+        when "in-progress"
+          :blue
+        when "completed"
+          :green
+        when "accepted"
+          :gray
+        else
+          :white
+      end
+    end
   end
 end
