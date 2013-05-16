@@ -97,6 +97,26 @@ module SprintlyCli
       end
     end
 
+    option :item, :type => :numeric
+    option :score, :type => :string
+    desc "score", "Score (size) a given item"
+    def score
+      sprintly_client = new_client
+      product_id = OPTIONS[:product_id].to_i
+      product = sprintly_client.product(product_id)
+
+      item_number = options[:item].to_i
+      score = options[:score]
+      score ||= ask "What score would you like to give this item?", :limited_to => ["~", "S", "M", "L", "XL"]
+      begin
+        sprintly_client.score_item(product_id, item_number, score)
+        say "Scored item #{item_number} for [#{product["name"]}] as #{score}"
+      rescue => ex
+        say "Could not score item #{item_number} for [#{product["name"]}]"
+        say "#{ex.message}"
+      end
+    end
+
     private
 
     def new_client
@@ -106,7 +126,7 @@ module SprintlyCli
     def format_items(items, header="Items:")
       items_str = [header]
       items.each do |item|
-        items_str << "#{item["number"]}\t(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}\t- #{item["title"]}"
+        items_str << "(#{item["score"]}) #{item["number"]}\t(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}\t- #{item["title"]}"
       end
       items_str.join("\n")
     end

@@ -36,6 +36,10 @@ module SprintlyCli
       api.update_item(product_id, item_number, :status => "completed")
     end
 
+    def score_item(product_id, item_number, score)
+      api.update_item(product_id, item_number, :score => score)
+    end
+
     private
 
     def api
