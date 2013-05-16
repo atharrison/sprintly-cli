@@ -16,6 +16,10 @@ module SprintlyCli
       api.get_items(product_id)
     end
 
+    def get_item(product_id, item_number)
+      api.get_item(product_id, item_number)
+    end
+
     def products
       api.get_products
     end
@@ -38,6 +42,13 @@ module SprintlyCli
 
     def score_item(product_id, item_number, score)
       api.update_item(product_id, item_number, :score => score)
+    end
+
+    def tag_item(product_id, item_number, tag)
+      item = get_item(product_id, item_number)
+      tags = item["tags"]
+      tags << tag
+      api.update_item(product_id, item_number, :tags => tags.uniq.join(","))
     end
 
     private

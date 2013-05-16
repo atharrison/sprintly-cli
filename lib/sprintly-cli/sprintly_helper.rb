@@ -66,6 +66,8 @@ module SprintlyCli
         portions = ["(#{item["score"]}) #{item["number"]}",
                     "(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}",
                      "- #{item["title"]}"]
+        tags = item["tags"] ||= []
+        portions << "\n\t\tTags: #{tags.join(", ")}" if !tags.empty?
         items_array << [portions.join("\t"), color]
       end
       items_array
