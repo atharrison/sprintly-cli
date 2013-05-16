@@ -63,7 +63,10 @@ module SprintlyCli
       #items_str = [header]
       items.each do |item|
         color = color_by_status(item["status"])
-        items_array << ["(#{item["score"]}) #{item["number"]}\t(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}\t- #{item["title"]}", color]
+        portions = ["(#{item["score"]}) #{item["number"]}",
+                    "(#{item["status"]}): #{name_from_first_last(item["assigned_to"], "unassigned")}",
+                     "- #{item["title"]}"]
+        items_array << [portions.join("\t"), color]
       end
       items_array
     end
