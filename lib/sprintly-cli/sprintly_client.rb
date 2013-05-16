@@ -16,6 +16,10 @@ module SprintlyCli
       api.get_items(product_id)
     end
 
+    def list_users(product_id)
+      api.get_people(product_id)
+    end
+
     def get_item(product_id, item_number)
       api.get_item(product_id, item_number)
     end

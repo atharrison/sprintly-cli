@@ -47,7 +47,20 @@ module SprintlyCli
       items.each do |msg, color|
         say msg, color
       end
+    end
 
+    desc "list_users", "List users"
+    def list_users
+      sprintly_client = new_client
+      product_id = GLOBAL_OPTIONS[:product_id].to_i
+      helper = SprintlyCli::SprintlyHelper.new
+
+      users = sprintly_client.list_users(product_id)
+      index = 1
+      users.each do |user|
+        say "#{index}: #{user["first_name"]} #{user["last_name"]} (id: #{user["id"]})", :green
+        index += 1
+      end
     end
 
     desc "products", "List products"
@@ -141,6 +154,14 @@ module SprintlyCli
       end
     end
 
+    option :item, :type => :numeric
+    desc "assign_item", "Assign user to item"
+    def assign_item
+      item_number = get_item_number(options)
+      user_id = get_user(options)
+      puts "assigning #{item_number} to #{user_id}"
+    end
+
     private
 
     def new_client
@@ -151,9 +172,18 @@ module SprintlyCli
       item_number = options[:item].to_i
       if item_number.nil?
         list
-        item_number = ask "Which item would you like to update?"
+        item_number = ask "Which item would you like to update?", :yellow
       end
       item_number
+    end
+
+    def get_user(options)
+      user_id = options[:user].to_i
+      if user_id.nil?
+        list_users
+        user_id = ask "Which user would you like to assign?", :yellow
+      end
+      user_id
     end
 
 
