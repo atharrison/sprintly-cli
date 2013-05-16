@@ -9,11 +9,11 @@ Currently you need to have Ruby installed on your system, along with bundler.
 
 To install, simply checkout this project in github:
 
-   git clone git://github.com/atharrison/sprintly-cli.git
+    git clone git://github.com/atharrison/sprintly-cli.git
 
 then call
 
-   bundle install
+    bundle install
 
 ## Running sprintly-cli
 
