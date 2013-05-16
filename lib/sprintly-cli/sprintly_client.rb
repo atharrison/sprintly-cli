@@ -28,6 +28,14 @@ module SprintlyCli
       api.create_item(product_id, params)
     end
 
+    def start_item(product_id, item_number)
+      api.update_item(product_id, item_number, :status => "in-progress")
+    end
+
+    def complete_item(product_id, item_number)
+      api.update_item(product_id, item_number, :status => "completed")
+    end
+
     private
 
     def api

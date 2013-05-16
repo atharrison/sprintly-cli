@@ -52,8 +52,8 @@ module SprintlyCli
       puts sprintly_client.products
     end
 
-    desc "create_item", "Create an item under the current Product"
-    def create_item
+    desc "create", "Create an item under the current Product"
+    def create
       sprintly_client = new_client
       product_id = OPTIONS[:product_id].to_i
       product = sprintly_client.product(product_id)
@@ -61,6 +61,40 @@ module SprintlyCli
       helper = SprintlyCli::SprintlyHelper.new
       new_item_params = helper.ask_for_new_item(product["name"])
       sprintly_client.create_item(product_id, new_item_params)
+    end
+
+    option :item, :type => :numeric
+    desc "start", "Start a given item"
+    def start
+      sprintly_client = new_client
+      product_id = OPTIONS[:product_id].to_i
+      product = sprintly_client.product(product_id)
+
+      item_number = options[:item].to_i
+      begin
+        sprintly_client.start_item(product_id, item_number)
+        say "Started item #{item_number} for [#{product["name"]}]"
+      rescue => ex
+        say "Could not start item #{item_number} for [#{product["name"]}]"
+        say "#{ex.message}"
+      end
+    end
+
+    option :item, :type => :numeric
+    desc "complete", "Complete a given item"
+    def complete
+      sprintly_client = new_client
+      product_id = OPTIONS[:product_id].to_i
+      product = sprintly_client.product(product_id)
+
+      item_number = options[:item].to_i
+      begin
+        sprintly_client.complete_item(product_id, item_number)
+        say "Completed item #{item_number} for [#{product["name"]}]"
+      rescue => ex
+        say "Could not complete item #{item_number} for [#{product["name"]}]"
+        say "#{ex.message}"
+      end
     end
 
     private
