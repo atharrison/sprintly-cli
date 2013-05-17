@@ -93,5 +93,19 @@ module SprintlyCli
           :white
       end
     end
+
+    def format_comments(comments, header="Comments:")
+      comments_array = []
+      comments_array << [header, :green]
+
+      comments.each do |comment|
+        puts comment
+        portions = [DateTime.iso8601(comment["created_at"]).to_time.localtime,
+                    "#{name_from_first_last(comment["created_by"])}:",
+                    comment["body"]]
+        comments_array << [portions.join("\t"), :green]
+      end
+      comments_array
+    end
   end
 end

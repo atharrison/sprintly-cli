@@ -55,6 +55,18 @@ module SprintlyCli
       api.update_item(product_id, item_number, :tags => tags.uniq.join(","))
     end
 
+    def assign_item_to_user(product_id, item_number, user_id)
+      api.update_item(product_id, item_number, :assigned_to => user_id)
+    end
+
+    def add_comment(product_id, item_number, text)
+      api.create_comment(product_id, item_number, text)
+    end
+
+    def get_comments(product_id, item_number)
+      api.get_comments(product_id, item_number)
+    end
+
     private
 
     def api
